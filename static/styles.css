@@ -3,6 +3,7 @@ body.container-fluid{
 	color: #5b5b5b;
 	font-family: 'Lato', sans-serif;
 	height: 100%;
+	width: 100%;
 }
 
 a:link{
@@ -118,9 +119,41 @@ table, th, td {
   border-collapse: collapse;
 }
 
+tr{
+	background-color: white !important;
+}
+.th_tweets{
+	background-color: #007a99 !important;
+	color: white;
+}
+
+
 .centered-text{
 	text-align: center;
 }
 #tableOftweets{
 	padding: 5%;
 }
+
+.analyzeTweetsButton{
+	padding: 10px !important;
+	margin-top: 10px !important;
+	background-color: #008CBA !important;
+}
+/*.button {
+  background-color: #4CAF50 !important;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+*/
+img.img_twitterlogo{
+  height: 50px !important;
+  width: 50px !important;
+ }

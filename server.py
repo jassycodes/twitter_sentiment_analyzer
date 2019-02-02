@@ -5,6 +5,7 @@ import requests
 import os
 import re
 import html
+import SentimentAnalyzer
 
 
 
@@ -36,21 +37,48 @@ def get_tweets(searchitem):
 def tweet_sentiment():
 	if request.method == 'GET':
 		text = request.args.get('text')
-	def printSomething():
-		print(text)
-	printSomething()
-	tweets_dict = get_tweets(text)
-	listOfTweets = []
-	print(type(tweets_dict['statuses'][:5]))
-	print(tweets_dict['statuses'][:1])
-	for t in tweets_dict['statuses'][:50]:
-	#	print(tweets_dict['statuses'])
-		#print()
-		#print(t.get('statuses'))#listOfTweets.append(t.get('text'))
-		listOfTweets.append(t['text'])
-		#print(type(t))
 
-	return render_template('twitter_sa.html', text=text, tweets=listOfTweets)
+	tweets_dict = get_tweets(text)
+	#print(tweets_dict.keys()) #to check the keys names of tweets_dict 
+	listOfTweets = []
+	tweetSentimentPercentage = []
+	tweet_sentiment_dict = {}
+	listOfTweetsInfo = []
+	#words_set = set()
+	#word_freq_dict = {}
+
+	for t in tweets_dict['statuses']:
+		listOfTweets.append(t['text'])
+
+	for tweet in listOfTweets:
+		tweetToAnalyze = SentimentAnalyzer.SentimentToAnalyze(tweet)
+		tweetSentiment = tweetToAnalyze.analyzeSentiment()
+		#print(tweetToAnalyze.getInfo())
+		tweetInfo = tweetToAnalyze.getInfo()
+		#print(type(tweetInfo['positivePercentage']))
+		listOfTweetsInfo.append(tweetInfo)
+	
+	#for word in words_set:
+	#	word_freq_dict['word'] = 
+
+
+		#positivePercentage = tweetToAnalyze.getPositivePercentage()
+		#negativePercentage = tweetToAnalyze.getNegativePercentage()
+		#positiveResult = "Positive %: " + "{:.2f}".format(positivePercentage) + "%"
+		#negativeResult = "Negative %: " + "{:.2f}".format(negativePercentage) + "%"
+		#print(tweetSentiment)
+		#tweetSentimentPercentage.append(positiveResult + " and " + negativeResult)
+
+
+
+
+
+
+
+	print("len of list: " )
+	print(len(listOfTweets))
+
+	return render_template('twitter_sa.html', text=text, tweets=listOfTweets, tweetsInfo=listOfTweetsInfo)
 
 @app.route('/gettext', methods=['POST'])
 def my_form_post():

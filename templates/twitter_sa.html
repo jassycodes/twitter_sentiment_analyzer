@@ -2,7 +2,7 @@
 <html lang="en">
    <head>
       <meta charset="utf-8">
-      <title>Jasmine Bayani's Portfolio</title>
+      <title>Jasmine Bayani's Twitter Analyzer</title>
       <meta name="description" content="Twitter Sentiment Analyzer">
       <meta name="Jasmine" content="SitePoint">
       <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
@@ -14,23 +14,39 @@
       <link rel="stylesheet" href="static/styles.css?v=1.0">
    </head>
    <body class = "container-fluid">
+         <img src="http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c53e.png" alt="Twitter Logo" style="height:100px; width: 100px; margin-left: 50%; margin-right: 50%;">
       <div class = "container-fluid" id="title">
          <h1 style="color: black;">Twitter Sentiment Analyzer</h1>
       </div>
       <div align="center">
          <form method='GET' action="/twittersentiment">
-            <input name="text">
-            <input type="submit">
+             <input name="text" style=" padding: 10px; padding-left: 5%; padding-right: 5%; border-color: darkgrey">
+            <div>
+            </div>
+            <input style=" padding: 10px; margin-top: 10px; background-color: #008CBA; color: white; font-weight: bold; border-color: darkgrey; border-width: 3px;" type="submit" value="Analyze Tweets!">
       </div>
       </form>
       <div id="tableOftweets">
-      <table>
+      <table class="centered-text">
         <tr>     
-            <th class="centered-text">TWEETS for {{text}}</th>
+            <th class="th_tweets">TWEETS with {{text}}</th>
+            <th class="th_tweets">SENTIMENT</th>
+            <th class="th_tweets">POSITIVE %</th>
+            <th class="th_tweets">NEGATIVE %</th>
+            <th class="th_tweets">POSITIVE WORDS</th>
+            <th class="th_tweets">NEGATIVE WORDS</th>
         </tr>
-        {% for thing in tweets %}
-            <tr><td>{{ thing }}</td></tr>
-         {% endfor %}  
+        {% for tweetInfo in tweetsInfo %}
+   
+         <tr>
+            <td>{{ tweetInfo['text'] }}</td>
+            <td>{{ tweetInfo['sentiment'] }}</td>
+            <td>{{ tweetInfo['positivePercentage'] }}</td>
+            <td>{{ tweetInfo['negativePercentage'] }}</td>
+            <td>{{ tweetInfo['positiveWords'] }}</td>
+            <td>{{ tweetInfo['negativeWords'] }}</td>
+         </tr>
+         {% endfor %}
       </table>
    </div>
 
