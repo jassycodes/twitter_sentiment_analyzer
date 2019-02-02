@@ -122,7 +122,7 @@ table, th, td {
 tr{
 	background-color: white !important;
 }
-.th_tweets{
+th{
 	background-color: #007a99 !important;
 	color: white;
 }

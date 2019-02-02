@@ -94,16 +94,27 @@ def tweet_sentiment():
 
 @app.route('/newtweets')
 def new_tweets_homepage():
-	return render_template('new_tweets.html')
+	new_tweets_txtfile = os.path.realpath("data/new-tweets.txt") #get address of sentiment analysis
+	with open(new_tweets_txtfile, "r") as f:
+		text_list = []
+		for everyLine in f:
+			text_list.append(everyLine)
+
+	return render_template('new_tweets.html', tweets=text_list)
 
 @app.route('/posttweets', methods=['POST'])
 def post_tweets():
 	newTweet = request.form.get('tweetPost')
 	new_tweets_txtfile = os.path.realpath("data/new-tweets.txt") #get address of sentiment analysis
-	with open(new_tweets_txtfile, "w+") as newTweetsf:
-		newTweetsf.write(newTweet)
-	return render_template('new_tweets.html')
+	with open(new_tweets_txtfile, "a+") as newTweetsf:
+		newTweetsf.write(newTweet + "\n")
+	
+	with open(new_tweets_txtfile, "r") as f:
+		text_list = []
+		for everyLine in f:
+			text_list.append(everyLine)
 
+	return render_template('new_tweets.html', tweets=text_list)
 
 @app.route('/gettext', methods=['POST'])
 def my_form_post():
