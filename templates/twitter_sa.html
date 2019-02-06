@@ -14,72 +14,69 @@
       <link rel="stylesheet" href="static/styles.css?v=1.0">
    </head>
    <body class = "container-fluid">
-         <a href="/"><img src="http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c53e.png" alt="Twitter Logo" style="height:100px; width: 100px; margin-left: 50%; margin-right: 50%;"></a>
-      <div class = "container-fluid" id="title">
-         <h1 style="color: black;">Twitter Sentiment Analyzer</h1>
+      <div id="menu" class="navbar navbar-default fixed-top">
+         <div class="container-fluid"><a href="/" class="menu-item">TWITTER ANALYZER + POST TWEET IN DICTIONARY</a> <a href="/newtweets" class="menu-item">POST TWEET IN TEXT FILE</a> <a href=#mainContent class="menu-item">^</a></div>
       </div>
-      <div align="center">
-         <form method='GET' action="/twittersentiment">
-             <input name="text" style=" padding: 10px; padding-left: 5%; padding-right: 5%; border-color: darkgrey">
-            <div>
+      <div id="mainContent" style="padding-top: 100px">
+         <a href="/"><img src="http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c53e.png" alt="Twitter Logo" style="height:100px; width: 100px; margin-left: 50%; margin-right: 50%;"></a>
+         <div class = "container-fluid" id="title">
+            <h1 style="color: black;">Twitter Sentiment Analyzer</h1>
+         </div>
+         <div align="center">
+            <form method='GET' action="/twittersentiment">
+               <input name="text" style=" padding: 10px; padding-left: 5%; padding-right: 5%; border-color: darkgrey">
+               <div>
+               </div>
+               <input style=" padding: 10px; margin-top: 10px; background-color: #008CBA; color: white; font-weight: bold; border-color: darkgrey; border-width: 3px;" type="submit" value="Analyze Tweets!">
+            </form>
+         </div>
+         <div align="center">
+            <div id="tableOftweets">
+               <table class="centered-text">
+                  <tr>
+                     <th class="th_tweets">TWEETS with {{text}}</th>
+                     <th class="th_tweets">SENTIMENT</th>
+                     <th class="th_tweets">POSITIVE %</th>
+                     <th class="th_tweets">NEGATIVE %</th>
+                     <th class="th_tweets">POSITIVE WORDS</th>
+                     <th class="th_tweets">NEGATIVE WORDS</th>
+                  </tr>
+                  {% for tweetInfo in tweetsInfo %}
+                  <tr>
+                     <td>{{ tweetInfo['text'] }}</td>
+                     <td>{{ tweetInfo['sentiment'] }}</td>
+                     <td>{{ tweetInfo['positivePercentage'] }}</td>
+                     <td>{{ tweetInfo['negativePercentage'] }}</td>
+                     <td>{{ tweetInfo['positiveWords'] }}</td>
+                     <td>{{ tweetInfo['negativeWords'] }}</td>
+                  </tr>
+                  {% endfor %}
+               </table>
             </div>
-            <input style=" padding: 10px; margin-top: 10px; background-color: #008CBA; color: white; font-weight: bold; border-color: darkgrey; border-width: 3px;" type="submit" value="Analyze Tweets!">
-      </form>
-       </div>
-      <div id="tableOftweets">
-      <table class="centered-text">
-        <tr>     
-            <th class="th_tweets">TWEETS with {{text}}</th>
-            <th class="th_tweets">SENTIMENT</th>
-            <th class="th_tweets">POSITIVE %</th>
-            <th class="th_tweets">NEGATIVE %</th>
-            <th class="th_tweets">POSITIVE WORDS</th>
-            <th class="th_tweets">NEGATIVE WORDS</th>
-        </tr>
-        {% for tweetInfo in tweetsInfo %}
-   
-         <tr>
-            <td>{{ tweetInfo['text'] }}</td>
-            <td>{{ tweetInfo['sentiment'] }}</td>
-            <td>{{ tweetInfo['positivePercentage'] }}</td>
-            <td>{{ tweetInfo['negativePercentage'] }}</td>
-            <td>{{ tweetInfo['positiveWords'] }}</td>
-            <td>{{ tweetInfo['negativeWords'] }}</td>
-         </tr>
-         {% endfor %}
-      </table>
-   </div>
-
-   <div align="center">
-         <form method='POST' action="/twittersentiment">
-             <input name="tweetPost" style=" padding: 10px; padding-left: 5%; padding-right: 5%; border-color: darkgrey">
-            <div>
+            <h2>Stores tweets in a dictionary:</h2>
+            <form method='POST' action="/twittersentiment">
+               <input name="tweetPost" style=" padding: 10px; padding-left: 5%; padding-right: 5%; border-color: darkgrey">
+               <div>
+               </div>
+               <input style=" padding: 10px; margin-top: 10px; background-color: #008CBA; color: white; font-weight: bold; border-color: darkgrey; border-width: 3px;" type="submit" value="Post my tweet!">
+            </form>
+            <div id="tableOfPostedtweets">
+               <table class="centered-text">
+                  <tr>
+                     <th>ID</th>
+                     <th>Tweet Posted</th>
+                  </tr>
+                  {% for tweetPosted in tweets_dict %}
+                  <tr>
+                     <td>{{ tweetPosted['tweetCount'] }}</td>
+                     <td>{{ tweetPosted['tweet'] }}</td>
+                  </tr>
+                  {% endfor %}
+               </table>
             </div>
-            <input style=" padding: 10px; margin-top: 10px; background-color: #008CBA; color: white; font-weight: bold; border-color: darkgrey; border-width: 3px;" type="submit" value="Post my tweet!">
-      </form>
-     
-       <div id="tableOfPostedtweets">
-      <table class="centered-text">
-        <tr>     
-            <th>ID</th>
-            <th>Tweet Posted</th>
-        </tr>
-        {% for tweetPosted in tweets_dict %}
-   
-         <tr>
-            <td>{{ tweetPosted['tweetCount'] }}</td>
-            <td>{{ tweetPosted['tweet'] }}</td>
-         </tr>
-         {% endfor %}
-      </table>
-   </div>
-
-
-   </div>
-
-
-   
-
+         </div>
+      </div>
+      <!--main content -->
    </body>
    <!--container -->
 </html>
