@@ -6,10 +6,123 @@ import os
 import re
 import html
 import SentimentAnalyzer
-
-
+import sqlite3
+import datetime
 
 app = Flask(__name__)
+
+now = datetime.datetime.now()
+
+####SQL CONNETION####
+connection = sqlite3.connect('data/twitter.db')
+
+c = connection.cursor()
+
+#c.execute('''DROP TABLE IF EXISTS tweets''')
+#c.execute('''DROP TABLE IF EXISTS users''')
+# Create table
+c.execute('''CREATE TABLE IF NOT EXISTS tweets 
+			 (id INTEGER PRIMARY KEY AUTOINCREMENT, tweet text NOT NULL, date_posted default CURRENT_DATE, user_id INTEGER, username text NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id), FOREIGN KEY(username) REFERENCES users(username))''')
+
+# Insert a row of data
+#c.execute("INSERT INTO tweets VALUES (9223372036854775807, 'i like burgers', CURRENT_DATE, 1, 'polygloter')")
+# c.execute("INSERT INTO tweets VALUES(?, ?, ?,?);", ("tweet", now, 2, 'polygloter'))
+
+
+c.execute('''CREATE TABLE IF NOT EXISTS users
+			 (id INTEGER PRIMARY KEY AUTOINCREMENT, username text NOT NULL, fname text NOT NULL, lname text NOT NULL, birthday date NOT NULL)''')
+
+connection.commit()
+
+# We can also close the connection if we are done with it.
+# Just be sure any changes have been committed or they will be lost.
+connection.close()
+
+####SQL CONNETION####
+
+@app.route("/twitter_clone")
+def twitterClone():
+	return render_template('tweets_in_db.html')
+
+@app.route("/tweet-posted", methods=['POST'])
+def tweetPosted():
+
+	tweet = request.form.get('tweetPost')
+	username = request.form.get('username')
+	connection = sqlite3.connect('data/twitter.db')
+
+	connection = sqlite3.connect('data/twitter.db')
+	c = connection.cursor()
+
+	userFound = False
+	status = ""
+
+	c.execute("SELECT * FROM users")
+ 
+	rows = c.fetchall()
+ 
+	for row in rows:
+		if username == row[2]:
+			userFound = True
+			break
+		#print(rows)
+
+	user_tweets_list = []
+
+	print("tweet-posted" + str(userFound))
+	if userFound == True:
+		c.execute("INSERT INTO tweets(tweet, username) VALUES(?,?);", (tweet, username))
+		status = "Succesfully posted tweet"
+			
+		c.execute("SELECT * FROM tweets")
+	 
+		rows = c.fetchall()
+ 
+		for row in rows:
+			if username == row[4]:
+				user_tweets_list.append(row[1])
+	else:
+		status = "'" + username + "' doesn't exist"
+
+	connection.commit()
+	connection.close()
+
+	return render_template('tweets_in_db.html', status_PostTweet=status, userTweets=user_tweets_list, username=username+"'s")
+
+@app.route("/create-new-user", methods=['POST'])
+def new_user():
+	username = request.form.get('username')
+	fname = request.form.get('fname')
+	lname = request.form.get('lname')
+	bday = request.form.get('bday')
+
+
+	connection = sqlite3.connect('data/twitter.db')
+	c = connection.cursor()
+
+	userFound = True
+
+	c.execute("SELECT * FROM users")
+ 
+	rows = c.fetchall()
+ 
+	for row in rows:
+		if username == row[2]:
+			userFound = True
+			break
+		#print(row)
+
+	if userFound == False:
+		c.execute("INSERT INTO users(username, fname, lname, birthday) VALUES(?,?,?,?);", (username, fname, lname, bday))
+		status = "Succesfully created your account!"
+	else:
+		status = "'" + username + "' already exists"
+
+	connection.commit()
+	connection.close()
+
+	return render_template('tweets_in_db.html', status_CreateUser=status)
+
 
 @app.route("/getusername")
 def index():
