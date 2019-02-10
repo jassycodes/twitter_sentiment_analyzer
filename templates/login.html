@@ -24,44 +24,18 @@
          </div>
 
             <div align="center">
-            <h2>Create a username:</h2>
-            <h3 style="background-color: black; color: green !important;>">{{status_CreateUser}}</h3>
-            <form method='POST' action="/create-new-user">
-               Username: <input name="username" style=" padding: 10px; padding-left: 2%; padding-right: 2%; border-color: darkgrey">
-              <!--  First Name: <input name="fname" style=" padding: 10px; padding-left: 2%; padding-right: 2%; border-color: darkgrey">
-               Last Name: <input name="lname" style=" padding: 10px; padding-left: 2%; padding-right: 2%; border-color: darkgrey"> -->
-               Password: <input name="pword" style=" padding: 10px; padding-left: 2%; padding-right: 2%; border-color: darkgrey">
-               <!-- Birthday: <input type="date" name="bday" style=" padding: 10px; padding-left: 2%; padding-right: 2%; border-color: darkgrey"> -->
+            <h2>Log In:</h2>
+            <h3 style="background-color: black; color: green !important;>">{{status_LogIn}}</h3>
+            <form method='POST' action="/login-user">
+               <div>Username: <input name="username" style=" padding: 10px; padding-left: 2%; padding-right: 2%; border-color: darkgrey"></div>
+               <div>Password: <input name="pword" style=" padding: 10px; padding-left: 2%; padding-right: 2%; border-color: darkgrey"></div>
                <div>
                </div>
-               <input style=" padding: 10px; margin-top: 10px; background-color: #008CBA; color: white; font-weight: bold; border-color: darkgrey; border-width: 3px;" type="submit" value="Create Account">
+               <input style=" padding: 10px; margin-top: 10px; background-color: #008CBA; color: white; font-weight: bold; border-color: darkgrey; border-width: 3px;" type="submit" value="LOG IN">
             </form>
 <div style="padding: 50px">
          </div>
-      </div>
-         <div align="center">
-            <h2>Stores tweets in a database file:</h2>
-            <h3 style="background-color: black; color: green !important;>">{{status_PostTweet}}</h3>
-            <form method='POST' action="/tweet-posted">
-               Username: <input name="username" style=" padding: 10px; padding-left: 5%; padding-right: 5%; border-color: darkgrey">
-               Tweet: <input name="tweetPost" style=" padding: 10px; padding-left: 5%; padding-right: 5%; border-color: darkgrey">
-               <div>
-               </div>
-               <input style=" padding: 10px; margin-top: 10px; background-color: #008CBA; color: white; font-weight: bold; border-color: darkgrey; border-width: 3px;" type="submit" value="Post my tweet!">
-            </form>
-            <div id="tableOfPostedtweets" style="padding-top: 10px;">
-               <table class="centered-text">
-                  <tr>
-                     <th>{{username}} Tweets</th>
-                  </tr>
-                  {% for tweet in userTweets %}
-                  <tr>
-                     <td>{{ tweet }} </td>
-                  </tr>
-                  {% endfor %}
-               </table>
-            </div>
-         </div>
+
       </div>
       <!--main content -->
    </body>
