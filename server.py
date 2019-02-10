@@ -18,15 +18,16 @@ now = datetime.datetime.now()
 connection = sqlite3.connect('data/twitter.db')
 
 c = connection.cursor()
-# c.execute('''DROP TABLE IF EXISTS tweets''')
-# c.execute('''DROP TABLE IF EXISTS users''')
+#c.execute('''DROP TABLE IF EXISTS tweets''')
+#c.execute('''DROP TABLE IF EXISTS users''')
 
 c.execute('''CREATE TABLE IF NOT EXISTS tweets 
-			 (id INTEGER PRIMARY KEY AUTOINCREMENT, tweet text NOT NULL, date_posted default CURRENT_DATE, user_id INTEGER, FOREIGN KEY(user_id) REFERENCES users(id))''')
+			 (id INTEGER PRIMARY KEY AUTOINCREMENT, tweet VARCHAR(140) NOT NULL, date_posted default CURRENT_DATE, user_id INTEGER, FOREIGN KEY(user_id) REFERENCES users(id))''')
 c.execute('''CREATE TABLE IF NOT EXISTS users
 			 (id INTEGER PRIMARY KEY AUTOINCREMENT, username text NOT NULL, password VARCHAR(12) NOT NULL, fname text, lname text, birthday date)''')
 c.execute("SELECT * FROM tweets")
-	 
+
+
 connection.commit()
 connection.close()
 
@@ -41,38 +42,38 @@ def tweetPosted():
 
 	status = ""
 	user_tweets_list = []
+
 	connection = sqlite3.connect('data/twitter.db')
 	c = connection.cursor()
 
 	userFound = True
 
-	c.execute("SELECT username FROM users WHERE username='{}'".format(username))
-	query = "SELECT * FROM users WHERE username='{}'".format(username)
-	print(query)
-	print("c.fetchone()")
-	print(c.fetchall()[0][0])
-	print(type(c.fetchall()))
-	print(len(c.fetchall()))
+	c.execute("SELECT username FROM users WHERE username=?",(username,))
+	#rows = c.fetchall()[0]
+	# username_in_db = c.fetchone()[0]
+	# print(username_in_db)
 
-	if type(c.fetchall()) == type(list):
-		c.execute("SELECT username FROM users WHERE username='{}'".format(username))
-		username_in_db = c.fetchall()[0]
-		print(username_in_db)
-		c.execute("SELECT id FROM users WHERE username=?",(username,))
-		userID_in_db = c.fetchall()[0]
-		print(userID_in_db)
-		c.execute("INSERT INTO tweets(user_id, tweet) VALUES(?,?);", (userID_in_db, tweet))
-		status = "'" + username + "' already exists"
+	# for row in rows:
+	# 	print(row)
+	print(tweet)
+
+
+	#  print(type(c.fetchall()))
+	#  print(c.fetchone())
+	if c.fetchone() is None:
+		status = "'" + username + "' doesn't exists"
 	else:
-		userFound = False
-
-	c.execute("SELECT tweet FROM tweets, users WHERE users.id = user_id and username=?",(username,))
-	user_tweets = c.fetchall()
-
-	if c.fetchall() is tuple:
-		for user_tweet in user_tweets:
-			user_tweets_list.append(user_tweet[0])
-			print(user_tweet[0])
+		c.execute("SELECT username FROM users WHERE username=?",(username,))
+		username_in_db = c.fetchone()[0]
+		if username_in_db == username:
+			userFound = True
+			print("match")
+			c.execute("SELECT id FROM users WHERE username=?",(username,))
+			userID_in_db = c.fetchone()[0]
+			print(userID_in_db)
+			c.execute("INSERT INTO tweets(user_id, tweet) VALUES(?,?);", (userID_in_db, tweet))
+	# else:
+	#  	status = "'" + username + "' doesn't exists"
 
 	connection.commit()
 	connection.close()
